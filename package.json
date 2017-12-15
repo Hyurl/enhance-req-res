@@ -1,0 +1,41 @@
+{
+  "name": "enhance-req-res",
+  "version": "0.1.0",
+  "description": "A tool to enhance abilities of the req and res.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "keywords": [
+    "enhance",
+    "req",
+    "res"
+  ],
+  "author": {
+    "name": "Ayon Lee",
+    "email": "i@hyurl.com",
+    "url": "hyurl.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyurl/enhance-req-res.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hyurl/enhance-req-res/issues",
+    "email": "i@hyurl.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "basic-auth": "^2.0.0",
+    "content-disposition": "^0.5.2",
+    "cookie-signature": "^1.0.6",
+    "etag": "^1.8.1",
+    "fresh": "^0.5.2",
+    "html-tags": "^2.0.0",
+    "mime-types": "^2.1.17",
+    "qs": "^6.5.1",
+    "send": "^0.16.1",
+    "sfn-cookie": "^0.1.4",
+    "type-is": "^1.6.15"
+  }
+}
