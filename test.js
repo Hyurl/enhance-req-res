@@ -7,9 +7,8 @@ http.createServer((req, res) => {
         domain: "localhost"
     })(req, res);
 
-    // console.log(req.URL);
-    // console.log(req.ip);
-    // console.log(req.get("Connection"));
+    console.log(req.URL);
+    console.log(req.ip);
 
     res.headers["x-powered-by"] = "Ayonium";
     res.lastModified = new Date(1970);
