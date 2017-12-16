@@ -59,8 +59,8 @@ Valid `options` include:
 
 ### Request
 
-All these `req` properties are read-only, you won't be able to modified them,
-except `charset.`
+Some of these properties are read-only for security reasons, that means you 
+won't be able to modified them.
 
 - `URL` An object parsed by `url` module for both new API and legacy API.
     be aware of `URL.auth`, which is actually sent by http 
@@ -97,7 +97,7 @@ except `charset.`
 - `type` The `Content-Type` requested body (without `charset`).
 - `charset` The requested body's `charset`, or the first accepted charset 
     (`charsets[0]`), assume they both use a same charset. Unlinke other 
-    properties, you can set this one to a valid charset, it will be used to 
+    properties, If you set this one to a valid charset, it will be used to 
     decode request body.
 - `charsets` An array carries all `Accept-Charset`s, ordered by `q`ualities.
 - `length` The `Content-Length` of requested body.
@@ -134,8 +134,8 @@ console.log(req.lang);
 
 ### Response
 
-Most of `res` properties are writable, when you assign a new value to them, it
-will actually mean something.
+Most of `res` properties are setters/getters, if you assign a new value to 
+them, that will actually mean something.
 
 #### `code` - Set/Get status code.
 
@@ -283,8 +283,8 @@ if (res.modified) {
 
 #### `headers` - Set/Get response headers.
 
-This property is a Proxy instance, and itself is read-only, you can only 
-manipulate its properties to set headers.
+This property is a Proxy instance, you can only manipulate its properties to 
+set headers.
 
 ```javascript
 res.headers["x-powered-by"] = "Node.js/8.9.3";
@@ -296,8 +296,8 @@ delete res.headers["x-powered-by"];
 
 #### `cookies` - Set/Get response cookies.
 
-This property is a Proxy instance, and itself is read-only, you can only 
-manipulate its properties to set cookies.
+This property is a Proxy instance, you can only manipulate its properties to 
+set cookies.
 
 ```javascript
 res.cookies.username = "Luna";
