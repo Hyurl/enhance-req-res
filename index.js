@@ -18,7 +18,7 @@ const { assign, getValues } = require('./lib/util');
  */
 function enhance(options = null) {
     options = Object.assign({
-        domain: "localhost",
+        domain: null,
         useProxy: false,
         capitalize: true,
         cookieSecret: null,
