@@ -1,6 +1,6 @@
 {
   "name": "enhance-req-res",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "A tool to enhance abilities of the req and res.",
   "main": "index.js",
   "scripts": {
