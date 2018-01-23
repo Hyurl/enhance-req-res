@@ -10,8 +10,6 @@ declare namespace enhance {
     }
 
     export interface Request extends IncomingMessage {
-        private _caches: { [x: string]: any };
-
         /**
          * Request time, not really connection time, but the moment this module 
          * performs actions.
@@ -183,8 +181,6 @@ declare namespace enhance {
     }
 
     export interface Response extends ServerResponse {
-        private _req: Request;
-
         /** Set/Get status code. */
         code: number;
 
