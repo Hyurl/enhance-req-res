@@ -1,8 +1,9 @@
 {
   "name": "enhance-req-res",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "description": "A tool to enhance abilities of the req and res.",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "node test"
   },
@@ -35,7 +36,7 @@
     "mime-types": "^2.1.17",
     "qs": "^6.5.1",
     "send": "^0.16.1",
-    "sfn-cookie": "^0.1.4",
+    "sfn-cookie": "^0.1.6",
     "type-is": "^1.6.15"
   }
 }

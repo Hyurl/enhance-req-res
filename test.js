@@ -1,11 +1,12 @@
 const http = require("http");
 const enhance = require("./");
+enhance.Cookie.parseMany
 
-http.createServer((req, res) => {
+http.createServer((_req, _res) => {
 
-    enhance({
-        domain: "localhost"
-    })(req, res);
+    var { req, res } = enhance({
+        domain: ["localhost", "127.0.0.1"]
+    })(_req, _res);
 
     console.log(req.URL);
     console.log(req.ip);

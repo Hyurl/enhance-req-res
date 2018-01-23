@@ -22,11 +22,11 @@ npm install enhance-req-res
 const http = require("http");
 const enhance = require("enhance-req-res");
 
-http.createServer((req, res) => {
+http.createServer((_req, _res) => {
 
-    enhance({
+    let { req, res } = enhance({
         domain: "localhost"
-    })(req, res);
+    })(_req, _res);
 
     console.log(req.URL);
     console.log(req.ip);
@@ -46,12 +46,13 @@ You can use `npm test` to test this code after downloading.
 
 ## API
 
-### enhance(`options?: {[x: string]: string}`): (req, res) => void
+### enhance(`options?: {[x: string]: string}`): (req, res) => { req: Request, res: Response }
 
 Valid `options` include:
 
-- `domain` Set a domain name for the program to find out the subdomain.
- - `useProxy` If `true`, when access properties like `req.ip` and 
+- `domain` Set a domain name for the program to find out the subdomain, if you
+    have multiple domains, you can set it an array.
+- `useProxy` If `true`, when access properties like `req.ip` and 
     `req.host`, will firstly try to get info from proxy, default: `false`.
 - `capitalize` Auto-capitalize response headers when setting, default: `true`.
 - `cookieSecret` A secret key to sign/unsign cookie values.
@@ -83,8 +84,9 @@ won't be able to modified them.
     `useProxy` is true, then try to use `proxy`'s `host` first.
 - `hostname` The requested host name (without `port`).
 - `port` The requested port.
+- `domain` Request domain name.
 - `subdomain` Unlike **express** or **koa**'s `subdomains`, this property is 
-    calculated by setting the `domain` option, and it's a string.
+    calculated by setting the `domain` option.
 - `path` Full requested path (with `search`).
 - `pathname` Directory part of requested path (without `search`).
 - `search` The requested URL `search` string, with a leading `?`.
@@ -226,7 +228,7 @@ res.location = "/login";
 console.log(res.location); // => /login
 ```
 
-#### `refresh` - Set/Get `Refresh` in a number of seconds.
+#### `refresh` - Set/Get `Refresh` in a number of seconds or with URL.
 
 ```javascript
 res.refresh = 3; // The page will auto-refresh in 3 seconds.
