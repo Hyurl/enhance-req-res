@@ -446,12 +446,12 @@ declare namespace enhance {
     export class Cookie extends iCookie { }
 }
 
-declare function enhance(options: {
-    domain: string | string[],
-    useProxy: boolean,
-    capitalize: boolean,
-    cookieSecret: string,
-    jsonp: string | boolean,
+declare function enhance(options?: {
+    domain?: string | string[],
+    useProxy?: boolean,
+    capitalize?: boolean,
+    cookieSecret?: string,
+    jsonp?: string | boolean,
 }): (req: IncomingMessage, res: ServerResponse) => {
     req: enhance.Request,
     res: enhance.Response
