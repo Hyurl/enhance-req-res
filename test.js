@@ -10,6 +10,7 @@ http.createServer((_req, _res) => {
 
     console.log(req.URL);
     console.log(req.ip);
+    console.log(req.accepts);
 
     res.headers["x-powered-by"] = "Ayonium";
     res.lastModified = new Date(1970);
