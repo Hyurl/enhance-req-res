@@ -264,6 +264,12 @@ declare namespace enhance {
         keepAlive: boolean;
 
         /** 
+         * If set, the respnse data will be sent as jsonp and the given value 
+         * will be used as the callback functoin name.
+         */
+        jsonp: string;
+
+        /** 
          * Whether the response has been modified.
          * 
          * This property is read-only, and only available after `res.atag` and
