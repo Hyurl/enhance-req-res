@@ -1,6 +1,5 @@
 const http = require("http");
 const enhance = require("./");
-enhance.Cookie.parseMany
 
 http.createServer((_req, _res) => {
 
@@ -21,3 +20,5 @@ http.createServer((_req, _res) => {
     console.log("Cost time: %d ms", Date.now() - req.time);
 
 }).listen(80);
+
+console.log("HTTP server listening http://localhost:80.");
