@@ -84,7 +84,7 @@ won't be able to modified them.
     `useProxy` is true, then try to use `proxy`'s `host` first.
 - `hostname` The requested host name (without `port`).
 - `port` The requested port.
-- `domain` Request domain name.
+- `domainName` Request domain name.
 - `subdomain` Unlike **express** or **koa**'s `subdomains`, this property is 
     calculated by setting the `domain` option.
 - `path` Full requested path (with `search`).

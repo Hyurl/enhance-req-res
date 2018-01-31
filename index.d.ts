@@ -24,7 +24,7 @@ declare namespace enhance {
         readonly URL: URL;
 
         /** Request domain name. */
-        readonly domain: string;
+        readonly domainName: string;
 
         /**
          * Unlike **express** or **koa**'s `subdomains`, this property is 
