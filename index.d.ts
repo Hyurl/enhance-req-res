@@ -1,9 +1,9 @@
 import { ServerResponse, IncomingMessage } from "http";
-import { URL as iURL } from "url";
+import * as url from "url";
 import iCookie = require("sfn-cookie");
 
 declare namespace enhance {
-    export interface URL extends iURL {
+    export interface URL extends url.URL {
         auth: string;
         query: string;
         slashes: boolean;

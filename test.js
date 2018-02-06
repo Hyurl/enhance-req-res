@@ -21,4 +21,4 @@ http.createServer((_req, _res) => {
 
 }).listen(80);
 
-console.log("HTTP server listening http://localhost:80.");
+console.log("HTTP server listening http://localhost.");
