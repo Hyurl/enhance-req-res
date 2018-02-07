@@ -1,6 +1,6 @@
 {
   "name": "enhance-req-res",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "A tool to enhance abilities of the req and res.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -30,7 +30,7 @@
     "basic-auth": "^2.0.0",
     "capitalization": "^0.1.0",
     "content-disposition": "^0.5.2",
-    "cookie-signature": "^1.0.6",
+    "cookie-signature": "^1.1.0",
     "etag": "^1.8.1",
     "fresh": "^0.5.2",
     "html-tags": "^2.0.0",
