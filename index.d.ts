@@ -18,9 +18,9 @@ declare namespace enhance {
          * Be aware of `urlObj.auth`, which is actually sent by http 
          * `Basic Authendication`.
          */
-        readonly urlObj: URL;
+        readonly urlObj: url6.URL;
         /** deprecated, use `urlObj` instead. */
-        readonly URL: URL;
+        readonly URL: url6.URL;
 
         /** Request domain name. */
         readonly domainName: string;
