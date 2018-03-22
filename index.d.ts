@@ -1,13 +1,10 @@
 import { ServerResponse, IncomingMessage } from "http";
-import * as url from "url";
-import iCookie = require("sfn-cookie");
+import * as url6 from "url6";
+import SfnCookie = require("sfn-cookie");
 
 declare namespace enhance {
-    export interface URL extends url.URL {
-        auth: string;
-        query: string;
-        slashes: boolean;
-    }
+    export const URL: typeof url6.URL;
+    export const Cookie: typeof SfnCookie;
 
     export interface Request extends IncomingMessage {
         /**
@@ -17,10 +14,12 @@ declare namespace enhance {
         readonly time: number;
 
         /**
-         * An object parsed by `url` module for both new API and legacy API. be 
-         * aware of `URL.auth`, which is actually sent by http 
+         * An object parsed by [url6](https://github.com/hyurl/url6) module. 
+         * Be aware of `urlObj.auth`, which is actually sent by http 
          * `Basic Authendication`.
          */
+        readonly urlObj: URL;
+        /** deprecated, use `urlObj` instead. */
         readonly URL: URL;
 
         /** Request domain name. */
@@ -84,11 +83,8 @@ declare namespace enhance {
         /** The requested URL `search` string, with a leading `?`. */
         readonly search: string;
 
-        /**
-         * Parsed URL query object, if you want to get original string, use 
-         * `URL.query` instead.
-         */
-        readonly query: { [param: string]: string };
+        /** Parsed URL query object. */
+        readonly query: { [key: string]: string };
 
         /**
          * Full requested URL string (without `hash`, which is not sent by the
@@ -99,7 +95,7 @@ declare namespace enhance {
         /** Equivalent to `headers.referer`. */
         readonly referer: string;
 
-        /** Reference to `headers.origin` or `URL.origin`. */
+        /** Reference to `headers.origin` or `urlObj.origin`. */
         readonly origin: string;
 
         /** The `Content-Type` requested body (without `charset`). */
@@ -448,8 +444,6 @@ declare namespace enhance {
          */
         download(filename: string, newName: string, cb?: (err: Error) => void): void;
     }
-
-    export class Cookie extends iCookie { }
 }
 
 declare function enhance(options?: {

@@ -7,7 +7,7 @@ http.createServer((_req, _res) => {
         domain: ["localhost", "127.0.0.1"]
     })(_req, _res);
 
-    console.log(req.URL);
+    console.log(req.urlObj);
     console.log(req.ip);
     console.log(req.accepts);
 
