@@ -2,9 +2,8 @@ const http = require("http");
 const enhance = require("./");
 const assert = require("assert");
 const axios = require("axios").default;
-const { Cookie } = require("sfn-cookie");
 
-var genderCookie = new Cookie({
+var genderCookie = new enhance.Cookie({
     value: "female",
     maxAge: 120,
     httpOnly: true

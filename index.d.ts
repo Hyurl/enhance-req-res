@@ -1,10 +1,10 @@
 import { ServerResponse, IncomingMessage } from "http";
 import * as url6 from "url6";
-import SfnCookie = require("sfn-cookie");
+import * as SfnCookie from "sfn-cookie";
 
 declare namespace enhance {
     export const URL: typeof url6.URL;
-    export const Cookie: typeof SfnCookie;
+    export const Cookie: typeof SfnCookie.Cookie;
 
     export interface Request extends IncomingMessage {
         /**

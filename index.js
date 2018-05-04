@@ -1,5 +1,5 @@
 const { IncomingMessage, ServerResponse } = require("http");
-const Cookie = require("sfn-cookie");
+const { Cookie } = require("sfn-cookie");
 const { URL } = require("url6");
 const reqHandle = require("./lib/req");
 const resHandle = require("./lib/res");
