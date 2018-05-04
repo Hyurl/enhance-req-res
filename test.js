@@ -2,7 +2,13 @@ const http = require("http");
 const enhance = require("./");
 const assert = require("assert");
 const axios = require("axios").default;
+const { Cookie } = require("sfn-cookie");
 
+var genderCookie = new Cookie({
+    value: "female",
+    maxAge: 120,
+    httpOnly: true
+});
 var server = http.createServer((_req, _res) => {
     let { req, res } = enhance({
         domain: ["localhost", "127.0.0.1"]
@@ -22,6 +28,7 @@ var server = http.createServer((_req, _res) => {
             res.send("Hello, World!");
         } else if (req.pathname == "/set-cookie") {
             res.cookies.user = req.auth ? req.auth.username : "anonymous";
+            res.cookies.gender = genderCookie;
             res.send("Hello, World!");
         } else if (req.pathname == "/test-req-props") {
             assert.equal(req.href, "http://localhost:3000/test-req-props?user=Luna&gender=female");
@@ -105,7 +112,10 @@ var server = http.createServer((_req, _res) => {
         });
     }).then(() => {
         return axios.get("/set-cookie").then(res => {
-            assert.deepEqual(res.headers["set-cookie"], ["user=s%3Aanonymous"]);
+            assert.deepEqual(res.headers["set-cookie"], [
+                "user=s%3Aanonymous",
+                genderCookie.toString()
+            ]);
         });
     }).then(() => {
         return axios.get("/test-req-props?user=Luna&gender=female", {
