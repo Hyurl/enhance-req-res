@@ -342,15 +342,7 @@ declare namespace enhance {
          * 
          *      res.cookie("username", "Luna", { maxAge: 3600 });
          */
-        cookie(name: string, value: string, options?: {
-            maxAge?: number,
-            expires?: string | number | Date,
-            sameSite?: "Strict" | "Lax",
-            domain?: string,
-            path?: string,
-            httpOnly?: boolean,
-            secure?: boolean
-        }): void;
+        cookie(name: string, value: string, options?: SfnCookie.BaseCookieOptions): void;
 
         /** 
          * Makes an HTTP basic authentication.
