@@ -9,9 +9,11 @@ var genderCookie = new enhance.Cookie({
     httpOnly: true
 });
 var server = http.createServer((_req, _res) => {
-    let { req, res } = enhance({
+    var enhanced = enhance({
         domain: ["localhost", "127.0.0.1"]
     })(_req, _res);
+    var req = enhanced.req,
+        res = enhanced.res;
 
     if (req.method == "GET") {
         if (req.path == "/") {
@@ -72,8 +74,8 @@ var server = http.createServer((_req, _res) => {
             res.type = "text/html";
             res.send("Hello, World!");
         } else if (req.pathname == "/res-charset") {
-            res.charset = "GB2312";
-            res.send("Hello, World!");
+            res.charset = "ASCII";
+            res.send("HelloWorld");
         } else if (req.pathname == "/res-length") {
             res.type = "text/plain";
             res.length = 13;
@@ -157,7 +159,7 @@ var server = http.createServer((_req, _res) => {
         });
     }).then(() => {
         return axios.get("/res-charset").then(res => {
-            assert.equal(res.headers["content-type"], "text/plain; charset=GB2312");
+            assert.equal(res.headers["content-type"], "text/plain; charset=ASCII");
         });
     }).then(() => {
         return axios.get("/res-length").then(res => {
@@ -166,7 +168,7 @@ var server = http.createServer((_req, _res) => {
         });
     }).then(() => {
         server.close();
-        console.log("All tests passed!");
+        console.log("#### OK ####");
     }).catch(err => {
         server.close();
         throw err;

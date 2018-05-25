@@ -1,9 +1,9 @@
-const { IncomingMessage, ServerResponse } = require("http");
+"use strict";
+
 const { Cookie } = require("sfn-cookie");
 const { URL } = require("url6");
 const reqHandle = require("./lib/req");
 const resHandle = require("./lib/res");
-const { assign, getValues } = require('./lib/util');
 
 function enhance(options = null) {
     options = Object.assign({

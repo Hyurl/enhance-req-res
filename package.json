@@ -1,11 +1,11 @@
 {
   "name": "enhance-req-res",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "A tool to enhance abilities of the req and res.",
   "main": "index.js",
   "types": "index.d.ts",
   "engines": {
-    "node": ">=6.11"
+    "node": ">=6.0"
   },
   "scripts": {
     "test": "node test"
@@ -43,9 +43,9 @@
     "parse-accepts": "^0.1.1",
     "qs": "^6.5.2",
     "send": "^0.16.2",
-    "sfn-cookie": "^1.0.4",
+    "sfn-cookie": "^1.0.5",
     "type-is": "^1.6.16",
-    "url6": "^6.0.1"
+    "url6": "^6.0.2"
   },
   "devDependencies": {
     "axios": "^0.18.0"
