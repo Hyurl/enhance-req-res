@@ -2,8 +2,10 @@
 
 const { Cookie } = require("sfn-cookie");
 const { URL } = require("url6");
-const reqHandle = require("./lib/req");
-const resHandle = require("./lib/res");
+const Request = require("./lib/req");
+const Response = require("./lib/res");
+const mixin = require("./lib/util").mixin;
+const extended = Symbol("extended");
 
 function enhance(options = null) {
     options = Object.assign({
@@ -23,8 +25,18 @@ function enhance(options = null) {
             res.jsonp = req.query[options.jsonp];
         }
 
-        reqHandle(options, req);
-        resHandle(options, res);
+        if (!req[extended] && !res[extended]) {
+            // Mix prototype
+            let ReqProto = Object.getPrototypeOf(req),
+                ResProto = Object.getPrototypeOf(res);
+
+            mixin(ReqProto, Request.prototype);
+            mixin(ResProto, Response.prototype);
+            ReqProto[extended] = ResProto[extended] = true;
+        }
+
+        Request.handle(options, req);
+        Response.handle(options, res);
 
         return { req, res };
     };

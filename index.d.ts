@@ -1,4 +1,5 @@
 import { ServerResponse, IncomingMessage } from "http";
+import { Http2Stream } from "http2";
 import * as url6 from "url6";
 import * as SfnCookie from "sfn-cookie";
 
@@ -8,6 +9,12 @@ declare namespace enhance {
 
     export interface Request extends IncomingMessage {
         /**
+         * The Http2Stream object backing the request 
+         * (**only available with http2**).
+         */
+        readonly stream: Http2Stream;
+
+        /**
          * Request time, not really connection time, but the moment this module 
          * performs actions.
          */
@@ -16,7 +23,7 @@ declare namespace enhance {
         /**
          * An object parsed by [url6](https://github.com/hyurl/url6) module. 
          * Be aware of `urlObj.auth`, which is actually sent by http 
-         * `Basic Authendication`.
+         * `Basic Authentication`.
          */
         readonly urlObj: url6.URL;
         /** deprecated, use `urlObj` instead. */
@@ -32,13 +39,16 @@ declare namespace enhance {
         readonly subdomain: string;
 
         /**
-         * If the client requested via a proxy server, this property will be set, 
-         * otherwise it's `null`. If available, it may contain these properties:
-         * - `protocol` The client's real request protocol (`x-forwarded-proto`).
-         * - `host` The real host that client trying to request (`x-forwarded-host`).
+         * If the client requested via a proxy server, this property will be 
+         * set, otherwise it's `null`. If available, it may contain these 
+         * properties:
+         * - `protocol` The client's real request protocol 
+         *  (`x-forwarded-proto`).
+         * - `host` The real host that client trying to request 
+         *  (`x-forwarded-host`).
          * - `ip`: The real IP of client (`ips[0]`).
-         * - `ips`: An array carries all IP addresses, includes client IP and proxy 
-         *   server IPs (`x-forwarded-for`).
+         * - `ips`: An array carries all IP addresses, includes client IP and 
+         *  proxy server IPs (`x-forwarded-for`).
          */
         readonly proxy: {
             protocol: string,
@@ -59,7 +69,7 @@ declare namespace enhance {
          */
         readonly protocol: string;
 
-        /** If `protocol` is `https`, then `true`, otherwise `false`. */
+        /** Whether the `protocol` is `https`. */
         readonly secure: boolean;
 
         /**
@@ -103,9 +113,9 @@ declare namespace enhance {
 
         /**
          * The requested body's `charset`, or the first accepted charset
-         * (`charsets[0]`), assume they both use a same charset. Unlinke other
-         * properties, you can set this one to a valid charset, it will be used to
-         * decode request body.
+         * (`charsets[0]`), assume they both use a same charset. Unlike other
+         * properties, you can set this one to a valid charset, it will be 
+         * used to decode request body.
          */
         charset: string;
 
@@ -169,7 +179,7 @@ declare namespace enhance {
 
         /**
          * Checks if the request `Content-Type` matches the given types, 
-         * avaialable of using short-hand words, like `html` indicates 
+         * available of using short-hand words, like `html` indicates 
          * `text/html`. If pass, returns the first matched type.
          * @param types 
          */
@@ -177,6 +187,12 @@ declare namespace enhance {
     }
 
     export interface Response extends ServerResponse {
+        /**
+         * The Http2Stream object backing the response 
+         * (**only available with http2**).
+         */
+        readonly stream: Http2Stream;
+
         /** Set/Get status code. */
         code: number;
 
@@ -228,7 +244,7 @@ declare namespace enhance {
          * Example:
          * 
          *      res.attachment = "example.txt";
-         *      console.log(res.attchment); // => attachment; filename="example.txt"
+         *      console.log(res.attachment); // => attachment; filename="example.txt"
          * */
         attachment: string;
 
@@ -256,12 +272,12 @@ declare namespace enhance {
          */
         vary: string | string[];
 
-        /** Set/Get `Connection` to `keep-alive`. */
+        /** Set `Connection` to `keep-alive` or check whether equivalent. */
         keepAlive: boolean;
 
         /** 
-         * If set, the respnse data will be sent as jsonp and the given value 
-         * will be used as the callback functoin name.
+         * If set, the response data will be sent as jsonp and the given value 
+         * will be used as the callback function name.
          */
         jsonp: string;
 
@@ -284,7 +300,7 @@ declare namespace enhance {
          *      res.headers["x-powered-by"] = "Node.js/8.9.3";
          *      console.log(res.headers); // => { "x-powered-by": "Node.js/8.9.3" }
          *      
-         *      // If you want to delete a heder, just call:
+         *      // If you want to delete a header, just call:
          *      delete res.headers["x-powered-by"];
          */
         readonly headers: { [x: string]: string | number | Date };
@@ -306,7 +322,7 @@ declare namespace enhance {
          * 
          *      // If you want to delete a cookie, just call:
          *      delete res.cookies.username;
-         *      // This may be more convinient if you just wnat it to expire:
+         *      // This may be more convenient if you just want it to expire:
          *      res.cookies.username = null;
          */
         readonly cookies: { [name: string]: any };
@@ -349,7 +365,7 @@ declare namespace enhance {
          * 
          * Example:
          * 
-         *      if(!req.auth){ // Require authendication if haven't.
+         *      if(!req.auth){ // Require authentication if haven't.
          *          res.auth();
          *      }else{
          *           // ...
