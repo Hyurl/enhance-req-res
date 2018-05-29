@@ -1,6 +1,6 @@
 {
   "name": "enhance-req-res",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "A tool to enhance abilities of the req and res.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -43,7 +43,7 @@
     "parse-accepts": "^0.1.1",
     "qs": "^6.5.2",
     "send": "^0.16.2",
-    "sfn-cookie": "^1.0.5",
+    "sfn-cookie": "^1.0.6",
     "type-is": "^1.6.16",
     "url6": "^6.0.2"
   },
