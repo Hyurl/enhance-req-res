@@ -60,9 +60,13 @@ Valid `options` include:
 
 ### Request
 
+The Request interface extends IncomingMessage/Http2ServerRequest with more 
+properties and methods.
+
 Some of these properties are read-only for security reasons, that means you 
 won't be able to modified them.
 
+- `stream` The Http2Stream object backing the request (only for http2).
 - `urlObj` An object parsed by [url6](https://github.com/hyurl/url6) module. 
     Be aware of `urlObj.auth`, which is actually sent by http 
     `Basic Authendication`.
@@ -97,7 +101,7 @@ won't be able to modified them.
 - `origin` Reference to `headers.origin` or `urlObj.origin`.
 - `type` The `Content-Type` requested body (without `charset`).
 - `charset` The requested body's `charset`, or the first accepted charset 
-    (`charsets[0]`), assume they both use a same charset. Unlinke other 
+    (`charsets[0]`), assume they both use a same charset. Unlike other 
     properties, If you set this one to a valid charset, it will be used to 
     decode request body.
 - `charsets` An array carries all `Accept-Charset`s, ordered by `q`ualities.
@@ -120,7 +124,7 @@ won't be able to modified them.
 - `keepAlive` Whether the request fires with `Connection: keep-alive`.
 - `get(field)` Gets a request header field's (case insensitive) value.
 - `is(...types)` Checks if the request `Content-Type` matches the given types,
-    avaialable of using short-hand words, like `html` indicates `text/html`. 
+    available of using short-hand words, like `html` indicates `text/html`. 
     If pass, returns the first matched type.
 
 ```javascript
@@ -135,8 +139,19 @@ console.log(req.lang);
 
 ### Response
 
-Most of `res` properties are setters/getters, if you assign a new value to 
+The Response interface extends ServerResponse/Http2ServerResponse with more 
+properties and methods.
+
+Most of its properties are setters/getters, if you assign a new value to 
 them, that will actually mean something.
+
+#### `stream` - The Http2Stream object backing the response (only for http2)
+
+This property is read-only.
+
+```javascript
+res.stream.push("some thing");
+```
 
 #### `code` - Set/Get status code.
 
