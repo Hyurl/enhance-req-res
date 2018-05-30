@@ -1,5 +1,5 @@
 import { ServerResponse, IncomingMessage } from "http";
-import { Http2Stream } from "http2";
+import { Http2Stream, Http2ServerRequest, Http2ServerResponse } from "http2";
 import * as url6 from "url6";
 import * as SfnCookie from "sfn-cookie";
 
@@ -15,8 +15,8 @@ declare namespace enhance {
         readonly stream: Http2Stream;
 
         /**
-         * Request time, not really connection time, but the moment this module 
-         * performs actions.
+         * Request time, not really connection time, but the moment this 
+         * module performs actions.
          */
         readonly time: number;
 
@@ -58,8 +58,8 @@ declare namespace enhance {
         };
 
         /**
-         * Authentication of the client, it could be `null`, or an object carries 
-         * `{ username, password }`.
+         * Authentication of the client, it could be `null`, or an object 
+         * carries `{ username, password }`.
          */
         readonly auth: { username: string, password: string };
 
@@ -136,8 +136,8 @@ declare namespace enhance {
 
         /**
          * An array carries all IP addresses, includes client IP and proxy
-         * server IPs. Unlike `proxy.ips`, which may be `undefined`, while this
-         * will always be available.
+         * server IPs. Unlike `proxy.ips`, which may be `undefined`, while 
+         * this will always be available.
          */
         readonly ips: string[];
 
@@ -166,8 +166,9 @@ declare namespace enhance {
         readonly keepAlive: boolean;
 
         /**
-         * `Cache-Control` sent by the client, it could be `null` (`no-cache`), a 
-         * `number` of seconds (`max-age`), or a string `private`, `public`, etc.
+         * `Cache-Control` sent by the client, it could be `null` (`no-cache`),
+         * a `number` of seconds (`max-age`), or a string `private`, `public`,
+         * etc.
          */
         readonly cache: string | number;
 
@@ -386,20 +387,21 @@ declare namespace enhance {
         /**
          * Sends contents to the client.
          * 
-         * This method will automatically perform type checking, If `data` is a 
-         * buffer, the `res.type` will be set to `application/octet-stream`; if 
-         * `data` is an object (or array), `res.type` will be set to 
-         * `application/json`; if `data` is a string, the program will detect if 
-         * it's `text/plain` `text/html`, `application/xml`, or `application/json`.
+         * This method will automatically perform type checking, If `data` is 
+         * a buffer, the `res.type` will be set to `application/octet-stream`;
+         * if `data` is an object (or array), `res.type` will be set to 
+         * `application/json`; if `data` is a string, the program will detect 
+         * if it's `text/plain`, `text/html`, `application/xml`, or 
+         * `application/json`.
          *
-         * This method also check if a response body has been modified or not, if
-         * `res.modified` is `false`, a `304 Not Modified` with no body will be 
-         * sent.
+         * This method also check if a response body has been modified since 
+         * the last time, if `res.modified` is `false`, a `304 Not Modified` 
+         * with no body will be sent.
          * 
-         * This method could send jsonp response as well, if `res.jsonp` is set, 
-         * or `options.jsonp` for the application is set and the query matches, a 
-         * jsonp response will be sent, and the `res.type` will be set to 
-         * `application/javascript`.
+         * This method could send jsonp response as well, if `res.jsonp` is 
+         * set, or `options.jsonp` for the application is set and the query 
+         * matches, a jsonp response will be sent, and the `res.type` will be 
+         * set to `application/javascript`.
          * 
          * Example:
          * 
@@ -444,23 +446,34 @@ declare namespace enhance {
         download(filename: string, cb?: (err: Error) => void): void;
 
         /**
-         * Performs a file download function, and set a new name to the response.
+         * Performs a file download function, and set a new name to the 
+         * response.
          * 
          * Example:
          * 
-         *      res.download("1a79a4d60de6718e8e5b326e338ae533.txt", "example.txt");
+         *     res.download("1a79a4d60de6718e8e5b326e338ae533.txt", "example.txt");
          */
         download(filename: string, newName: string, cb?: (err: Error) => void): void;
     }
+
+    export interface Options {
+        domain?: string | string[],
+        useProxy?: boolean,
+        capitalize?: boolean,
+        cookieSecret?: string,
+        /**
+         * Set a query name for jsonp callback if needed. If `true` is set, 
+         * then the query name will be `jsonp`. In the query string, using the
+         * style `jsonp=callback` to request jsonp response.
+         */
+        jsonp?: string | boolean,
+    }
 }
 
-declare function enhance(options?: {
-    domain?: string | string[],
-    useProxy?: boolean,
-    capitalize?: boolean,
-    cookieSecret?: string,
-    jsonp?: string | boolean,
-}): (req: IncomingMessage, res: ServerResponse) => {
+declare function enhance(options?: enhance.Options): (
+    req: IncomingMessage | Http2ServerRequest,
+    res: ServerResponse | Http2ServerResponse
+) => {
     req: enhance.Request,
     res: enhance.Response
 };

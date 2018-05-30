@@ -5,10 +5,11 @@
 This module adds additional properties and methods to the corresponding `req` 
 and `res` objects in a http server, and enhance abilities of the program.
 
-It has both `express` style and `koa` style, but in a very different way, and 
-only keeps very few and useful methods.
+This module has both `express` style and `koa` style, but only keeps very few 
+and useful methods. It is compatible to most well-known `connect` and `express` 
+middleware, so you can use them instead.
 
-This module can work with `connect`, so you can use it to build frameworks.
+This module also works with `https` and `http2`.
 
 ## Install
 
@@ -42,42 +43,44 @@ http.createServer((_req, _res) => {
 }).listen(80);
 ```
 
-You can use `npm test` to test this code after downloading.
-
 ## API
 
 ### enhance(`options?: {[x: string]: string}`): (req, res) => { req: Request, res: Response }
 
 Valid `options` include:
 
-- `domain` Set a domain name for the program to find out the subdomain, if you
-    have multiple domains, you can set it an array.
-- `useProxy` If `true`, when access properties like `req.ip` and 
+- `domain` Set a domain name (or multiple ones in an array) for the program to 
+    find out the subdomain.
+ - `useProxy` If `true`, when access properties like `req.ip` and 
     `req.host`, will firstly try to get info from proxy, default: `false`.
 - `capitalize` Auto-capitalize response headers when setting, default: `true`.
 - `cookieSecret` A secret key to sign/unsign cookie values.
-- `jsonp` Set a default jsonp callback name if you want.
+- `jsonp` Set a query name for jsonp callback if needed. If `true` is set, 
+    then the query name will be `jsonp`. In the query string, using the style
+    `jsonp=callback` to request jsonp response.
 
 ### Request
 
-The Request interface extends IncomingMessage/Http2ServerRequest with more 
-properties and methods.
+### Request
+
+The `Request` interface extends `IncomingMessage`/`Http2ServerRequest` with 
+more properties and methods.
 
 Some of these properties are read-only for security reasons, that means you 
 won't be able to modified them.
 
-- `stream` The Http2Stream object backing the request (only for http2).
-- `urlObj` An object parsed by [url6](https://github.com/hyurl/url6) module. 
-    Be aware of `urlObj.auth`, which is actually sent by http 
-    `Basic Authendication`.
+- `stream` The `Http2Stream` object backing the request (only for http2).
+- `urlObj` An object parsed by [url6](https://github.com/hyurl/url6) module 
+    that contains URL information. Be aware of `urlObj.auth`, which is 
+    actually sent by http `Basic Authendication`.
 - `time` Request time, not really connection time, but the moment this 
     module performs actions.
 - `proxy` If the client requested via a proxy server, this property will be 
     set, otherwise it's `null`. If available, it may contain these properties:
     - `protocol` The client's real request protocol (`x-forwarded-proto`).
     - `host` The real host that client trying to request (`x-forwarded-host`).
-    - `ip`: The real IP of client (`ips[0]`).
-    - `ips`: An array carries all IP addresses, includes client IP and proxy 
+    - `ip` The real IP of client (`ips[0]`).
+    - `ips` An array carries all IP addresses, includes client IP and proxy 
         server IPs (`x-forwarded-for`).
 - `auth` Authentication of the client, it could be `null`, or an object 
     carries `{ username, password }`.
@@ -88,7 +91,7 @@ won't be able to modified them.
     `useProxy` is true, then try to use `proxy`'s `host` first.
 - `hostname` The requested host name (without `port`).
 - `port` The requested port.
-- `domainName` Request domain name.
+- `domainName` The request domain name.
 - `subdomain` Unlike **express** or **koa**'s `subdomains`, this property is 
     calculated by setting the `domain` option.
 - `path` Full requested path (with `search`).
@@ -99,7 +102,7 @@ won't be able to modified them.
     client).
 - `referer` Equivalent to `headers.referer`.
 - `origin` Reference to `headers.origin` or `urlObj.origin`.
-- `type` The `Content-Type` requested body (without `charset`).
+- `type` The `Content-Type` of requested body (without `charset`).
 - `charset` The requested body's `charset`, or the first accepted charset 
     (`charsets[0]`), assume they both use a same charset. Unlike other 
     properties, If you set this one to a valid charset, it will be used to 
@@ -107,7 +110,7 @@ won't be able to modified them.
 - `charsets` An array carries all `Accept-Charset`s, ordered by `q`ualities.
 - `length` The `Content-Length` of requested body.
 - `xhr` Whether the request fires with `X-Requested-With: XMLHttpRequest`.
-- `cookies` An object carries all parsed `Cookie`s sent by the client.
+- `cookies` An object carries all parsed cookies sent by the client.
 - `ip` The real client IP, if `useProxy` is `true`, then trying to use 
     `proxy`'s `ip` first.
 - `ips` An array carries all IP addresses, includes client IP and proxy 
@@ -117,10 +120,11 @@ won't be able to modified them.
 - `accepts` An array carries all `Accept`s types, ordered by `q`ualities.
 - `lang` The first accepted response language (`accepts[0]`).
 - `langs` An array carries all `Accept-Language`s, ordered by `q`ualities.
-- `encoding` The first accepted response encodings (`encodings[0]`). 
+- `encoding` The first accepted response encoding (`encodings[0]`). 
 - `encodings` An array carries all `Accept-Encoding`s, ordered by sequence.
 - `cache` `Cache-Control` sent by the client, it could be `null` (`no-cache`),
-    a `number` of seconds (`max-age`), or a string `private`, `public`, etc.
+    a `number` of seconds (`max-age`), or a string like `private`, `public`, 
+    etc.
 - `keepAlive` Whether the request fires with `Connection: keep-alive`.
 - `get(field)` Gets a request header field's (case insensitive) value.
 - `is(...types)` Checks if the request `Content-Type` matches the given types,
@@ -139,13 +143,13 @@ console.log(req.lang);
 
 ### Response
 
-The Response interface extends ServerResponse/Http2ServerResponse with more 
-properties and methods.
+The `Response` interface extends `ServerResponse`/`Http2ServerResponse` with 
+more properties and methods.
 
 Most of its properties are setters/getters, if you assign a new value to 
 them, that will actually mean something.
 
-#### `stream` - The Http2Stream object backing the response (only for http2)
+#### `stream` - The `Http2Stream` object backing the response (only for http2)
 
 This property is read-only.
 
@@ -242,7 +246,7 @@ res.location = "/login";
 console.log(res.location); // => /login
 ```
 
-#### `refresh` - Set/Get `Refresh` in a number of seconds or with URL.
+#### `refresh` - Set/Get `Refresh` in a number of seconds.
 
 ```javascript
 res.refresh = 3; // The page will auto-refresh in 3 seconds.
@@ -272,7 +276,7 @@ console.log(res.cache); // private
 ```javascript
 res.vary = "Content-Type";
 res.vary = ["Content-Type", "Content-Length"]; // Set multiple fields.
-console.log(res.vary); // => Content-Type, Content-Length
+console.log(res.vary); // => [Content-Type, Content-Length]
 ```
 
 #### `keepAlive` - Set/Get `Connection`.
@@ -299,7 +303,7 @@ if (res.modified) {
 
 #### `headers` - Set/Get response headers.
 
-This property is a Proxy instance, you can only manipulate its properties to 
+This property is a `Proxy` instance, you can only manipulate its properties to 
 set headers.
 
 ```javascript
@@ -319,9 +323,8 @@ set cookies.
 res.cookies.username = "Luna";
 res.cookies.username = "Luna; Max-Age=3600"; // Set both value and max-age
 
-// Because this module internally uses sfn-cookie to serialize cookies, so you 
-// can also set cookies in this way:
-const Cookie = require("sfn-cookie");
+// Another way to set a cookie is using the Cookie class:
+const { Cookie } = require("webium");
 res.cookies.username = new Cookie({ value: "Luna", maxAge: 3600 });
 
 console.log(res.cookies); // => { username: "Luna" }
@@ -331,9 +334,6 @@ delete res.cookies.username;
 // Or this may be more convinient if you just wnat it to expire:
 res.cookies.username = null;
 ```
-
-You can check out more details about `sfn-cookie` on 
-[GitHub](https://github.com/hyurl/sfn-cookie).
 
 #### `get(field)` - Gets a response header field's value.
 
@@ -404,8 +404,8 @@ if(!req.auth){ // Require authendication if haven't.
 
 #### `unauth()` - Clears authentication.
 
-Since browsers clear authentication while response `401 Unauthorized`, so this
-method is exactly the same as `req.auth()`, only more readable.
+Since browsers clear authentication while respond `401 Unauthorized`, so 
+this method is exactly the same as `res.auth()`, only more readable.
 
 #### `redirect(url, code?: 301 | 302)` - Redirects the request to a specified URL.
 
@@ -420,11 +420,12 @@ res.redirect(-1);
 This method will automatically perform type checking, If `data` is a buffer, 
 the `res.type` will be set to `application/octet-stream`; if `data` is an 
 object (or array), `res.type` will be set to `application/json`; if `data` is 
-a string, the program will detect if it's `text/plain` `text/html`, 
+a string, the program will detect if it's `text/plain`, `text/html`, 
 `application/xml`, or `application/json`.
 
-This method also check if a response body has been modified or not, if 
-`res.modified` is `false`, a `304 Not Modified` with no body will be sent.
+This method also check if a response body has been modified since the last 
+time, if `res.modified` is `false`, a `304 Not Modified` with no body will be 
+sent.
 
 ```javascript
 res.send("Hello, World!"); // text/plain
@@ -436,8 +437,9 @@ res.send(Buffer.from("Hello, World!")); // application/octet-stream
 ```
 
 This method could send jsonp response as well, if `res.jsonp` is set, or 
-`options.jsonp` for `enhance()` is set and the query matches, a jsonp response
-will be sent, and the `res.type` will be set to `application/javascript`.
+`options.jsonp` for the application is set and the query matches, a jsonp 
+response will be sent, and the `res.type` will be set to 
+`application/javascript`.
 
 ```javascript
 res.jsonp = "callback";
@@ -476,8 +478,8 @@ Other forms:
 The callback function, will be called after the response has been sent, or 
 failed.
 
-Other than downloading a real file, you can perform downloading a string by 
-using `res.attachment` and `res.send()`.
+Other than downloading a real file, you can perform downloading a string as a 
+text file by using `res.attachment` and `res.send()`.
 
 ```javascript
 // This content will be downloaded using the name 'example.html':
@@ -485,6 +487,6 @@ res.attachment = "example.html";
 res.send("<p>Hello, World!</p>");
 ```
 
-Worth mentioned, if you use `res.send()` to send a Buffer, most browsers will 
+Worth mentioned, if you use `res.send()` to send a buffer, most browsers will 
 download the buffer as a file, so it's always better to set `res.attachment` 
 when you are sending buffers.

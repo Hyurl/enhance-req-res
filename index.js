@@ -20,11 +20,6 @@ function enhance(options = null) {
         // Make a reference of req to res.
         res._req = req;
 
-        // Enable jsonp response.
-        if (options.jsonp && req.query[options.jsonp]) {
-            res.jsonp = req.query[options.jsonp];
-        }
-
         if (!req[extended] && !res[extended]) {
             // Mix prototype
             let ReqProto = Object.getPrototypeOf(req),
@@ -37,6 +32,12 @@ function enhance(options = null) {
 
         Request.handle(options, req);
         Response.handle(options, res);
+
+        // Enable jsonp response.
+        let jsonp = options.jsonp === true ? "jsonp" : options.jsonp;
+        if (jsonp && req.query && req.query[jsonp]) {
+            res.jsonp = req.query[jsonp];
+        }
 
         return { req, res };
     };

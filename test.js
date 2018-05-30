@@ -10,7 +10,8 @@ var genderCookie = new enhance.Cookie({
 });
 var server = http.createServer((_req, _res) => {
     var enhanced = enhance({
-        domain: ["localhost", "127.0.0.1"]
+        domain: ["localhost", "127.0.0.1"],
+        jsonp: true
     })(_req, _res);
     var req = enhanced.req,
         res = enhanced.res;
@@ -80,6 +81,11 @@ var server = http.createServer((_req, _res) => {
             res.type = "text/plain";
             res.length = 13;
             res.end("Hello, World!");
+        } else if (req.pathname == "/jsonp") {
+            res.jsonp = "callback";
+            res.send(["Hello", "World"]);
+        } else if (req.pathname == "/jsonp2") {
+            res.send({hello: "world"});
         } else {
             res.status = 404;
             res.send(res.status);
@@ -165,6 +171,16 @@ var server = http.createServer((_req, _res) => {
         return axios.get("/res-length").then(res => {
             assert.equal(res.headers["content-type"], "text/plain");
             assert.equal(res.headers["content-length"], 13);
+        });
+    }).then(() => {
+        return axios.get("/jsonp").then(res => {
+            assert.equal(res.headers["content-type"], "application/javascript; charset=UTF-8");
+            assert.equal(res.data, 'callback(["Hello","World"]);');
+        });
+    }).then(() => {
+        return axios.get("/jsonp2?jsonp=callback").then(res => {
+            assert.equal(res.headers["content-type"], "application/javascript; charset=UTF-8");
+            assert.equal(res.data, 'callback({"hello":"world"});');
         });
     }).then(() => {
         server.close();
