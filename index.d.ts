@@ -91,7 +91,7 @@ declare namespace enhance {
         readonly search?: string;
 
         /** Parsed URL query object. */
-        readonly query?: { [key: string]: string };
+        readonly query: { [key: string]: string };
 
         /**
          * Full requested URL string (without `hash`, which is not sent by the
@@ -123,7 +123,7 @@ declare namespace enhance {
         length: number;
 
         /** An object carries all parsed `Cookie`s sent by the client. */
-        readonly cookies?: { [name: string]: any };
+        readonly cookies: { [name: string]: any };
 
         /**
          * The real client IP, if `useProxy` is `true`, then trying to use 
