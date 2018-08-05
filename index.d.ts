@@ -12,7 +12,7 @@ declare namespace enhance {
          * The Http2Stream object backing the request 
          * (**only available with http2**).
          */
-        readonly stream: Http2Stream;
+        readonly stream?: Http2Stream;
 
         /**
          * Request time, not really connection time, but the moment this 
@@ -30,13 +30,13 @@ declare namespace enhance {
         readonly URL: url6.URL;
 
         /** Request domain name. */
-        readonly domainName: string;
+        readonly domainName?: string;
 
         /**
          * Unlike **express** or **koa**'s `subdomains`, this property is 
          * calculated by setting the `domain` option.
          */
-        readonly subdomain: string;
+        readonly subdomain?: string;
 
         /**
          * If the client requested via a proxy server, this property will be 
@@ -50,18 +50,15 @@ declare namespace enhance {
          * - `ips`: An array carries all IP addresses, includes client IP and 
          *  proxy server IPs (`x-forwarded-for`).
          */
-        readonly proxy: {
+        readonly proxy?: {
             protocol: string,
             host: string,
             ip: string,
             ips: string[]
         };
 
-        /**
-         * Authentication of the client, it could be `null`, or an object 
-         * carries `{ username, password }`.
-         */
-        readonly auth: { username: string, password: string };
+        /** HTTP Authentication of the client. */
+        readonly auth?: { username: string, password: string };
 
         /**
          * Either `http` or `https`, if `useProxy` is true, then trying to use 
@@ -82,7 +79,7 @@ declare namespace enhance {
         readonly hostname: string;
 
         /** The requested port. */
-        readonly port: number;
+        readonly port?: number;
 
         /** Full requested path (with `search`). */
         readonly path: string;
@@ -91,10 +88,10 @@ declare namespace enhance {
         readonly pathname: string;
 
         /** The requested URL `search` string, with a leading `?`. */
-        readonly search: string;
+        readonly search?: string;
 
         /** Parsed URL query object. */
-        readonly query: { [key: string]: string };
+        readonly query?: { [key: string]: string };
 
         /**
          * Full requested URL string (without `hash`, which is not sent by the
@@ -103,13 +100,13 @@ declare namespace enhance {
         readonly href: string;
 
         /** Equivalent to `headers.referer`. */
-        readonly referer: string;
+        readonly referer?: string;
 
         /** Reference to `headers.origin` or `urlObj.origin`. */
-        readonly origin: string;
+        readonly origin?: string;
 
         /** The `Content-Type` requested body (without `charset`). */
-        readonly type: string;
+        readonly type?: string;
 
         /**
          * The requested body's `charset`, or the first accepted charset
@@ -117,7 +114,7 @@ declare namespace enhance {
          * properties, you can set this one to a valid charset, it will be 
          * used to decode request body.
          */
-        charset: string;
+        charset?: string;
 
         /** An array carries all `Accept-Charset`s, ordered by `q`ualities. */
         readonly charsets: string[];
@@ -126,7 +123,7 @@ declare namespace enhance {
         length: number;
 
         /** An object carries all parsed `Cookie`s sent by the client. */
-        readonly cookies: { [name: string]: any };
+        readonly cookies?: { [name: string]: any };
 
         /**
          * The real client IP, if `useProxy` is `true`, then trying to use 
@@ -142,19 +139,19 @@ declare namespace enhance {
         readonly ips: string[];
 
         /** The first accepted response content type (`accepts[0]`). */
-        accept: string;
+        accept?: string;
 
         /** An array carries all `Accept`s types, ordered by `q`ualities. */
         readonly accepts: string[];
 
         /** The first accepted response language (`accepts[0]`). */
-        lang: string;
+        lang?: string;
 
         /** An array carries all `Accept-Language`s, ordered by `q`ualities. */
         readonly langs: string[];
 
         /** The first accepted response encodings (`encodings[0]`). */
-        encoding: string;
+        encoding?: string;
 
         /** An array carries all `Accept-Encoding`s, ordered by sequence. */
         readonly encodings: string[];
@@ -170,7 +167,7 @@ declare namespace enhance {
          * a `number` of seconds (`max-age`), or a string `private`, `public`,
          * etc.
          */
-        readonly cache: string | number;
+        readonly cache?: string | number;
 
         /**
          * Gets a request header field's (case insensitive) value.
@@ -192,7 +189,7 @@ declare namespace enhance {
          * The Http2Stream object backing the response 
          * (**only available with http2**).
          */
-        readonly stream: Http2Stream;
+        readonly stream?: Http2Stream;
 
         /** Set/Get status code. */
         code: number;
@@ -204,28 +201,28 @@ declare namespace enhance {
         status: number | string;
 
         /** Set/Get `Content-Type` without `charset` part. */
-        type: string;
+        type?: string;
 
         /** Set/Get `Content-Type` with only `charset` part. */
-        charset: string;
+        charset?: string;
 
         /** Set/Get `Content-Length`. */
-        length: number;
+        length?: number;
 
         /** Set/Get `Content-Encoding`. */
-        encoding: string;
+        encoding?: string;
 
         /** Set/Get `Date`. */
-        date: string | Date;
+        date?: string | Date;
 
         /** Set/Get - `Etag`. */
-        etag: string;
+        etag?: string;
 
         /** Set/Get `Last-Modified`. */
-        lastModified: string | Date;
+        lastModified?: string | Date;
 
         /** Set/Get `Location`. */
-        location: string;
+        location?: string;
 
         /** 
          * Set/Get `Refresh` as a number of seconds, or a string with URL.
@@ -237,7 +234,7 @@ declare namespace enhance {
          *      res.refresh = "3; URL=/logout";
          *      console.log(res.refresh); // => 3; URL=/logout
          */
-        refresh: number | string;
+        refresh?: number | string;
 
         /** 
          * Set/Get `Content-Disposition` with a filename.
@@ -247,7 +244,7 @@ declare namespace enhance {
          *      res.attachment = "example.txt";
          *      console.log(res.attachment); // => attachment; filename="example.txt"
          * */
-        attachment: string;
+        attachment?: string;
 
         /** 
          * Set/Get `Cache-Control`.
@@ -260,7 +257,7 @@ declare namespace enhance {
          *      res.cache = "private";
          *      console.log(res.cache); // private
          */
-        cache: string | number;
+        cache?: string | number;
 
         /** 
          * Set/Get `Vary`.
@@ -271,7 +268,7 @@ declare namespace enhance {
          *      res.vary = ["Content-Type", "Content-Length"];
          *      console.log(res.vary); // => Content-Type, Content-Length
          */
-        vary: string | string[];
+        vary?: string | string[];
 
         /** Set `Connection` to `keep-alive` or check whether equivalent. */
         keepAlive: boolean;
@@ -280,7 +277,7 @@ declare namespace enhance {
          * If set, the response data will be sent as jsonp and the given value 
          * will be used as the callback function name.
          */
-        jsonp: string;
+        jsonp?: string;
 
         /** 
          * Whether the response has been modified.

@@ -1,6 +1,6 @@
 {
   "name": "enhance-req-res",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "A tool to enhance abilities of the req and res.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -31,6 +31,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@types/node": "^10.5.6",
     "basic-auth": "^2.0.0",
     "capitalization": "^1.0.0",
     "content-disposition": "^0.5.2",
@@ -39,13 +40,13 @@
     "fresh": "^0.5.2",
     "html-tags": "^2.0.0",
     "lodash": "^4.17.10",
-    "mime-types": "^2.1.18",
+    "mime-types": "^2.1.19",
     "parse-accepts": "^0.1.1",
     "qs": "^6.5.2",
     "send": "^0.16.2",
     "sfn-cookie": "^1.0.6",
     "type-is": "^1.6.16",
-    "url6": "^6.0.2"
+    "url6": "^6.0.3"
   },
   "devDependencies": {
     "axios": "^0.18.0"
