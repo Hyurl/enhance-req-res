@@ -191,41 +191,41 @@ declare namespace enhance {
          */
         readonly stream?: Http2Stream;
 
-        /** Set/Get status code. */
+        /** Sets/Gets status code. */
         code: number;
 
-        /** Set/Get status message. */
+        /** Sets/Gets status message. */
         message: string;
 
-        /** Set/Get both status code and message. */
+        /** Sets/Gets both status code and message. */
         status: number | string;
 
-        /** Set/Get `Content-Type` without `charset` part. */
+        /** Sets/Gets `Content-Type` without `charset` part. */
         type?: string;
 
-        /** Set/Get `Content-Type` with only `charset` part. */
+        /** Sets/Gets `Content-Type` with only `charset` part. */
         charset?: string;
 
-        /** Set/Get `Content-Length`. */
+        /** Sets/Gets `Content-Length`. */
         length?: number;
 
-        /** Set/Get `Content-Encoding`. */
+        /** Sets/Gets `Content-Encoding`. */
         encoding?: string;
 
-        /** Set/Get `Date`. */
+        /** Sets/Gets `Date`. */
         date?: string | Date;
 
-        /** Set/Get - `Etag`. */
+        /** Sets/Gets - `Etag`. */
         etag?: string;
 
-        /** Set/Get `Last-Modified`. */
+        /** Sets/Gets `Last-Modified`. */
         lastModified?: string | Date;
 
-        /** Set/Get `Location`. */
+        /** Sets/Gets `Location`. */
         location?: string;
 
         /** 
-         * Set/Get `Refresh` as a number of seconds, or a string with URL.
+         * Sets/Gets `Refresh` as a number of seconds, or a string with URL.
          * 
          * Example:
          * 
@@ -237,7 +237,7 @@ declare namespace enhance {
         refresh?: number | string;
 
         /** 
-         * Set/Get `Content-Disposition` with a filename.
+         * Sets/Gets `Content-Disposition` with a filename.
          * 
          * Example:
          * 
@@ -247,7 +247,7 @@ declare namespace enhance {
         attachment?: string;
 
         /** 
-         * Set/Get `Cache-Control`.
+         * Sets/Gets `Cache-Control`.
          * 
          * Example:
          * 
@@ -260,7 +260,7 @@ declare namespace enhance {
         cache?: string | number;
 
         /** 
-         * Set/Get `Vary`.
+         * Sets/Gets `Vary`.
          * 
          * Example:
          * 
@@ -288,7 +288,7 @@ declare namespace enhance {
         readonly modfied: boolean;
 
         /**
-         * Set/Get response headers.
+         * Sets/Gets response headers.
          * 
          * This property is a Proxy instance, and itself is read-only, you can 
          * only manipulate its properties to set headers.
@@ -304,7 +304,7 @@ declare namespace enhance {
         readonly headers: { [x: string]: string | number | Date };
 
         /**
-         * Set/Get response cookies.
+         * Sets/Gets response cookies.
          *
          * This property is a Proxy instance, and itself is read-only, you can 
          * only manipulate its properties to set cookies.
