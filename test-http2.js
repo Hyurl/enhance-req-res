@@ -21,5 +21,5 @@ var server = http2.createSecureServer(options, (_req, _res) => {
 });
 
 server.listen(443, () => {
-    console.log("please open https://localhost/");
+    console.log("please open https://localhost/ in your browser");
 });
