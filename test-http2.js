@@ -16,6 +16,8 @@ var server = http2.createSecureServer(options, (_req, _res) => {
         res = enhanced.res;
 
     if (req.method == "GET") {
+        res.statusMessage = "200 OK";
+        res.headers["connection"] = "keep-alive";
         res.headers["server"] = "NodeJS";
         res.send("<h1>Hello, World!</p>");
     }
