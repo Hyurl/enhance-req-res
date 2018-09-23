@@ -1,13 +1,13 @@
 "use strict";
 
-const { Cookie } = require("sfn-cookie");
-const { URL } = require("url6");
+const Cookie = require("sfn-cookie").default;
+const URL = require("url6").URL;
 const Request = require("./lib/req");
 const Response = require("./lib/res");
 const mixin = require("./lib/util").mixin;
 const extended = Symbol("extended");
 
-function enhance(options = null) {
+function enhance(options) {
     options = Object.assign({
         domain: null,
         useProxy: false,
@@ -25,8 +25,8 @@ function enhance(options = null) {
             let ReqProto = Object.getPrototypeOf(req),
                 ResProto = Object.getPrototypeOf(res);
 
-            mixin(ReqProto, Request.prototype);
-            mixin(ResProto, Response.prototype);
+            mixin(ReqProto, Request.default.prototype);
+            mixin(ResProto, Response.default.prototype);
             ReqProto[extended] = ResProto[extended] = true;
         }
 
