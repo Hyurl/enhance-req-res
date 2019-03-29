@@ -42,8 +42,7 @@ declare namespace enhance {
          * If the client requested via a proxy server, this property will be 
          * set, otherwise it's `null`. If available, it may contain these 
          * properties:
-         * - `protocol` The client's real request protocol 
-         *  (`x-forwarded-proto`).
+         * - `protocol` The client's real request protocol (`x-forwarded-proto`).
          * - `host` The real host that client trying to request 
          *  (`x-forwarded-host`).
          * - `ip`: The real IP of client (`ips[0]`).
@@ -369,7 +368,7 @@ declare namespace enhance {
          *           // ...
          *      }
          * */
-        auth(realm: string): void;
+        auth(realm?: string): void;
 
         /** Clears authentication. */
         unauth(): void;
