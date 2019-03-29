@@ -2,10 +2,13 @@
 
 const Cookie = require("sfn-cookie").default;
 const URL = require("url6").URL;
-const Request = require("./lib/req");
-const Response = require("./lib/res");
-const mixin = require("./lib/util").mixin;
-const extended = Symbol("extended");
+const request = require("./lib/req");
+const response = require("./lib/res");
+const http2 = require("./lib/util").http2;
+
+try {
+    http2 = require("http2");
+} catch (e) { }
 
 function enhance(options) {
     options = Object.assign({
@@ -20,18 +23,17 @@ function enhance(options) {
         // Make a reference of req to res.
         res._req = req;
 
-        if (!req[extended] && !res[extended]) {
-            // Mix prototype
-            let ReqProto = Object.getPrototypeOf(req),
-                ResProto = Object.getPrototypeOf(res);
-
-            mixin(ReqProto, Request.default.prototype);
-            mixin(ResProto, Response.default.prototype);
-            ReqProto[extended] = ResProto[extended] = true;
+        // inheritance hack
+        if (http2 && (req instanceof http2.Http2ServerRequest)) {
+            Object.setPrototypeOf(req, request.Http2Request.prototype);
+            Object.setPrototypeOf(res, response.Http2Response.prototype);
+        } else {
+            Object.setPrototypeOf(req, request.Request.prototype);
+            Object.setPrototypeOf(res, response.Response.prototype);
         }
 
-        Request.handle(options, req);
-        Response.handle(options, res);
+        request.handle(options, req);
+        response.handle(options, res);
 
         // Enable jsonp response.
         let jsonp = options.jsonp === true ? "jsonp" : options.jsonp;
@@ -45,5 +47,9 @@ function enhance(options) {
 
 enhance.Cookie = Cookie;
 enhance.URL = URL;
+enhance.Request = request.Request;
+enhance.Http2Request = request.Http2Request;
+enhance.Response = response.Response;
+enhance.Http2Response = response.Http2Response;
 
 module.exports = enhance;

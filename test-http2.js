@@ -1,7 +1,7 @@
 const http2 = require("http2");
 const enhance = require("./");
 const fs = require("fs");
-const axios = require("axios").default;
+const assert = require("assert");
 
 var options = {
     key: fs.readFileSync(__dirname + "/server.key"),
@@ -14,6 +14,9 @@ var server = http2.createSecureServer(options, (_req, _res) => {
     })(_req, _res);
     var req = enhanced.req,
         res = enhanced.res;
+
+    assert.ok(req instanceof enhance.Http2Request);
+    assert.ok(res instanceof enhance.Http2Response);
 
     if (req.method == "GET") {
         res.statusMessage = "200 OK";

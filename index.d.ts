@@ -1,5 +1,5 @@
-import { ServerResponse, IncomingMessage } from "http";
-import { Http2Stream, Http2ServerRequest, Http2ServerResponse } from "http2";
+import { ServerResponse, IncomingMessage, OutgoingHttpHeaders } from "http";
+import { ServerHttp2Stream, Http2ServerRequest, Http2ServerResponse } from "http2";
 import * as url6 from "url6";
 import * as SfnCookie from "sfn-cookie";
 
@@ -12,7 +12,7 @@ declare namespace enhance {
          * The Http2Stream object backing the request 
          * (**only available with http2**).
          */
-        readonly stream?: Http2Stream;
+        readonly stream?: ServerHttp2Stream;
 
         /**
          * Request time, not really connection time, but the moment this 
@@ -183,18 +183,21 @@ declare namespace enhance {
         is(...types: string[]): string | false;
     }
 
+    export abstract class Request implements Request { }
+    export abstract class Http2Request extends Request { }
+
     export interface Response extends ServerResponse {
         /**
          * The Http2Stream object backing the response 
          * (**only available with http2**).
          */
-        readonly stream?: Http2Stream;
+        readonly stream?: ServerHttp2Stream;
 
         /** Sets/Gets status code. */
         code: number;
 
         /** Sets/Gets status message. */
-        message: string;
+        message?: string;
 
         /** Sets/Gets both status code and message. */
         status: number | string;
@@ -300,7 +303,7 @@ declare namespace enhance {
          *      // If you want to delete a header, just call:
          *      delete res.headers["x-powered-by"];
          */
-        readonly headers: { [x: string]: string | number | Date };
+        readonly headers: OutgoingHttpHeaders & { [x: string]: string | number | Date };
 
         /**
          * Sets/Gets response cookies.
@@ -451,6 +454,9 @@ declare namespace enhance {
          */
         download(filename: string, newName: string, cb?: (err: Error) => void): void;
     }
+
+    export abstract class Response implements Response { }
+    export abstract class Http2Response extends Response { }
 
     export interface Options {
         domain?: string | string[],

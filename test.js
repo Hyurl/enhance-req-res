@@ -16,6 +16,9 @@ var server = http.createServer((_req, _res) => {
     var req = enhanced.req,
         res = enhanced.res;
 
+    assert.ok(req instanceof enhance.Request);
+    assert.ok(res instanceof enhance.Response);
+
     if (req.method == "GET") {
         if (req.path == "/") {
             res.send("<h1>Hello, World!</p>");
