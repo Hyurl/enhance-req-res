@@ -21,7 +21,7 @@ var server = http.createServer((_req, _res) => {
 
     if (req.method == "GET") {
         if (req.path == "/") {
-            res.send("<h1>Hello, World!</p>");
+            res.send("<h1>Hello, World!</h1>");
         } else if (req.pathname == "/res-xml") {
             res.send("<Text>Hello, World!</Text>");
         } else if (req.pathname == "/res-object") {
@@ -98,9 +98,9 @@ var server = http.createServer((_req, _res) => {
     axios.defaults.baseURL = "http://localhost:3000";
     Promise.resolve(null).then(() => {
         return axios.get("/").then(res => {
-            assert.equal(res.data, "<h1>Hello, World!</p>");
+            assert.equal(res.data, "<h1>Hello, World!</h1>");
             assert.equal(res.headers["content-type"], "text/html; charset=UTF-8");
-            assert.equal(res.headers["content-length"], 21);
+            assert.equal(res.headers["content-length"], 22);
         });
     }).then(() => {
         return axios.get("/res-xml").then(res => {
