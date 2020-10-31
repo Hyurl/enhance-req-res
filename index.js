@@ -6,10 +6,6 @@ const request = require("./lib/req");
 const response = require("./lib/res");
 const http2 = require("./lib/util").http2;
 
-try {
-    http2 = require("http2");
-} catch (e) { }
-
 function enhance(options) {
     options = Object.assign({
         domain: null,
@@ -43,7 +39,7 @@ function enhance(options) {
 
         return { req, res };
     };
-};
+}
 
 enhance.Cookie = Cookie;
 enhance.URL = URL;
